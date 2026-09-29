@@ -11,6 +11,9 @@ Renders the 5 figures documenting the cryptic-pocket hypothesis results from
                                                 (top_n by n_sites, most robust)
   fig6_crypticity_vs_affinity.png            hypothesis D (pooled, no effect —
                                                 skipped if 13 hasn't been run)
+  fig7_apo_druggability_vs_crypticity.png    hypothesis E (fpocket's own apo
+                                                druggability score, ECDF —
+                                                skipped if 14 hasn't been run)
 
 Output: results/figures/*.png
 """
@@ -133,6 +136,31 @@ def fig6_affinity(affinity_df: pd.DataFrame, out_dir: Path):
     savefig(fig, out_dir, "fig6_crypticity_vs_affinity.png")
 
 
+def fig7_apo_druggability(drug_df: pd.DataFrame, out_dir: Path):
+    # Both groups' medians round to ~0 (most matched sites are minor surface
+    # pockets, not a structure's top-ranked pocket) so a boxplot would be
+    # uninformative — an ECDF shows the real, if modest, distributional shift.
+    cryptic = drug_df[drug_df["crypticity_index"] >= 5]["druggability_apo_min_v"].dropna()
+    noncryptic = drug_df[drug_df["crypticity_index"] < 2]["druggability_apo_min_v"].dropna()
+    u, p = stats.mannwhitneyu(noncryptic, cryptic, alternative="greater")
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    for data, label, color in [(noncryptic, f"minimally cryptic (CI<2), n={len(noncryptic)}", PALETTE[0]),
+                                (cryptic, f"highly cryptic (CI≥5), n={len(cryptic)}", PALETTE[3])]:
+        x = np.sort(data.values)
+        y = np.arange(1, len(x) + 1) / len(x)
+        ax.plot(x, y, label=label, color=color, linewidth=2)
+    ax.set_xlabel("apo-state fpocket druggability score")
+    ax.set_ylabel("cumulative fraction of sites")
+    ax.set_xlim(0, 1)
+    ax.set_title("E) Standard detector underrates cryptic sites in the apo state")
+    ax.legend(loc="lower right", fontsize=8)
+    ax.text(0.02, 0.97, f"Mann-Whitney U (non-cryptic > cryptic), {fmt_p(p)}\n"
+            f"mean: non-cryptic={noncryptic.mean():.3f}, cryptic={cryptic.mean():.3f}",
+            transform=ax.transAxes, ha="left", va="top", fontsize=8, color="dimgray")
+    savefig(fig, out_dir, "fig7_apo_druggability_vs_crypticity.png")
+
+
 def _short_family(name: str, maxlen: int = 38) -> str:
     name = str(name).replace("Belongs to the ", "").replace(" family", "")
     return name if len(name) <= maxlen else name[: maxlen - 1] + "…"
@@ -200,6 +228,12 @@ def main():
         affinity_df = None
         print("[skip] fig6: missing results/crypticity_index_with_affinity.csv. Run 13 first.")
 
+    try:
+        drug_df = pd.read_csv(f"{cfg['paths']['results']}/druggability_analysis.csv")
+    except FileNotFoundError:
+        drug_df = None
+        print("[skip] fig7: missing results/druggability_analysis.csv. Run 14 first.")
+
     diversity = diversity.merge(
         crypt[["pocket_site_id", "protein_family"]], on="pocket_site_id", how="left")
 
@@ -211,7 +245,10 @@ def main():
     n_figs = 5
     if affinity_df is not None:
         fig6_affinity(affinity_df, out_dir)
-        n_figs = 6
+        n_figs += 1
+    if drug_df is not None:
+        fig7_apo_druggability(drug_df, out_dir)
+        n_figs += 1
 
     print(f"\nWrote {n_figs} figures -> {out_dir}")
 

@@ -136,3 +136,7 @@ External tools used (already present on this machine, per `common.py`):
    pushed hypothesis D from nominally significant to non-significant (item
    3) while leaving hypotheses A and C essentially unchanged suggests it's
    doing real, not cosmetic, work — not just an unverified caveat.
+
+## Data to be downloaded into /data folder 
+
+Use the fowllowing Zenodo [link](https:10.5281/zenodo.23036097) 

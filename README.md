@@ -108,4 +108,4 @@ External tools used (already present on this machine, per `common.py`):
 
 ## Data to be downloaded into /data folder 
 
-Use the fowllowing Zenodo [link]() 
+Use the fowllowing Zenodo [link](DOI:10.5281/zenodo.23036097) 

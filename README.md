@@ -106,6 +106,6 @@ External tools used (already present on this machine, per `common.py`):
    as mmCIF instead of PDB if this starts discarding too much data on a
    broader run.
 
-## Data to be dowloaded into /data folder 
+## Data to be downloaded into /data folder 
 
 Use the fowllowing Zenodo [link]() 

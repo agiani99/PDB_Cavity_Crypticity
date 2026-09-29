@@ -1,0 +1,10 @@
+pandas
+numpy
+scipy
+requests
+biopython
+rdkit
+pyyaml
+statsmodels
+tqdm
+matplotlib

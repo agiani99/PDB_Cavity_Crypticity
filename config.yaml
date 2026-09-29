@@ -1,0 +1,103 @@
+# Cryptic Pocket Prediction pipeline — configuration
+
+paths:
+  index: data/index
+  structures: data/structures
+  pockets: data/pockets
+  ligands: data/ligands
+  results: results
+
+rcsb:
+  search_url: "https://search.rcsb.org/rcsbsearch/v2/query"
+  data_graphql_url: "https://data.rcsb.org/graphql"
+  files_base_url: "https://files.rcsb.org/download"
+  method: "X-RAY DIFFRACTION"
+  resolution_max: 2.5
+  taxonomy_id: 9606          # Homo sapiens
+  # If non-empty, restrict discovery to exactly these UniProt accessions
+  # (fast path for a hand-picked target list). Leave empty ([]) to run
+  # the full discovery crawl over all matching human X-ray structures.
+  target_uniprot_ids: []   # e.g. ["P00915"] (human carbonic anhydrase 1) was used for the smoke test —
+                            # see data/ and results/ for its output. Leave [] for the full discovery crawl.
+  # Safety caps for the broad discovery crawl (target_uniprot_ids == [])
+  max_groups: 500            # keep the N UniProt groups with the most structures
+  group_page_size: 1000      # RCSB group_by pagination page size
+  entry_batch_size: 50       # entries per GraphQL batch request
+  request_pause_s: 0.2       # politeness delay between API calls
+
+selection:
+  min_structures_per_protein: 3   # need enough variability to see apo vs holo
+  min_apo_structures: 1
+  min_holo_structures: 1
+  # HET codes never counted as a "ligand" for apo/holo classification —
+  # cryoprotectants, ions, buffer components, crystallization additives.
+  solvent_blacklist:
+    - HOH
+    - GOL
+    - EDO
+    - PEG
+    - PG4
+    - PGE
+    - DMS
+    - SO4
+    - PO4
+    - CL
+    - NA
+    - K
+    - MG
+    - CA
+    - ZN
+    - MN
+    - FE
+    - FE2
+    - NI
+    - CO
+    - CU
+    - ACT
+    - TRS
+    - HEPES
+    - MPD
+    - BME
+    - TLA
+    - CIT
+    - IPA
+    - FMT
+    - ACY
+    - NH4
+    - IOD
+    - BR
+    - IMD
+    - UNX
+    - EPE
+
+fpocket:
+  binary: fpocket             # resolved on PATH, else run inside WSL (see common.py)
+
+pocket_matching:
+  # Two pockets in aligned structures are "the same site" if their alpha-sphere
+  # centroids are within this distance (after CA superposition) AND their
+  # lining-residue sets overlap by at least the Jaccard threshold below.
+  centroid_distance_max_A: 6.0
+  residue_jaccard_min: 0.3
+  reference_selection: "best_resolution_apo"   # or "best_resolution"
+
+crypticity:
+  epsilon: 1.0   # denominator epsilon in crypticity_index = V_liganded / (V_apo + eps), A^3
+
+stratification:
+  min_family_n: 50    # a family needs at least this many scored sites to get its own stat
+  top_n_families: 10  # how many families to carry into the "most evident" plots/tables
+
+bioactivity:
+  # PDBeChem-derived PDB-ligand -> ChEMBL bioactivity join (PCHEMBL_VALUE =
+  # standardized -log10(M) potency). Not part of this repo — external dataset.
+  report_path: "C:/Users/andrea.DESKTOP-26V6UN4/Documents/PDB_LIGAND/pdbechem_v2/additional_data/bioactivity_reports/bioactivity_report_full.tsv"
+
+dogsite3:
+  base_url: "https://proteins.plus/api"
+  # NOTE: exact POST schema not yet confirmed live (returns 400 on the
+  # documented-looking payloads tried so far). Get an API key / working
+  # example from https://proteins.plus/api and update run_dogsite3() in
+  # common.py before relying on 09_dogsite_cross_validation.py.
+  poll_interval_s: 5
+  poll_timeout_s: 300

@@ -20,6 +20,11 @@ Pipeline stages (run in order from `scripts/`):
 03_download_and_clean.py       Download PDB files, strip to protein-only atoms
 04_run_fpocket.py               fpocket on every structure -> every pocket's
                                  volume/druggability/centroid/lining residues
+04b_deduplicate_structures.py  Redundancy reduction: collapses repeat holo
+                                 depositions of the same protein+ligand complex
+                                 to one best-resolution representative (apo
+                                 structures untouched — their variability IS
+                                 the signal). 05+ prefer this output when present.
 05_align_and_match_pockets.py  Bio.PDB CA superposition onto a reference
                                  structure per protein; greedy-cluster pockets
                                  across structures into pocket_site_id's
@@ -105,7 +110,3 @@ External tools used (already present on this machine, per `common.py`):
    CA1 entries in the smoke test. Fixable by writing cleaned structures out
    as mmCIF instead of PDB if this starts discarding too much data on a
    broader run.
-
-## Data to be downloaded into /data folder 
-
-Use the fowllowing Zenodo [link](https:10.5281/zenodo.23036097) 

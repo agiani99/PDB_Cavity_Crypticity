@@ -3,7 +3,9 @@
 Tests the hypothesis: structural variability across independently solved
 crystal structures of the same human protein predicts cryptic-pocket
 formation, and that crypticity in turn predicts ligand presence, size,
-chemical diversity, and affinity.
+chemical diversity, and affinity — plus (hypothesis E) that a standard
+pocket detector's own apo-state druggability score underrates sites that
+later turn out to be cryptic, the premise that motivated this whole project.
 
     apo (small pocket) --------> holo (large pocket, ligand bound)
     V_apo                        V_liganded
@@ -39,11 +41,15 @@ Pipeline stages (run in order from `scripts/`):
 11_stratify_by_family.py       Per-family crypticity stats + within-family
                                  diversity correlation; overall Kruskal-Wallis
                                  across families (formalizes the ad hoc check)
-12_make_figures.py             5 figures documenting the hypothesis results ->
-                                 results/figures/*.png
+12_make_figures.py             5-7 figures documenting the hypothesis results ->
+                                 results/figures/*.png (fig6/fig7 need 13/14
+                                 to have been run first; skipped otherwise)
 13_join_bioactivity.py         Hypothesis D (affinity): joins the max-volume-
                                  holo ligand against real ChEMBL bioactivity
                                  data (external PDBeChem report, see config)
+14_druggability_analysis.py    Hypothesis E: fpocket's own apo-state
+                                 druggability score (already computed in 06,
+                                 never analyzed) vs. crypticity_index
 ```
 
 ## Setup
@@ -136,7 +142,14 @@ External tools used (already present on this machine, per `common.py`):
    pushed hypothesis D from nominally significant to non-significant (item
    3) while leaving hypotheses A and C essentially unchanged suggests it's
    doing real, not cosmetic, work — not just an unverified caveat.
-
-## Data to be downloaded into /data folder 
-
-Use the fowllowing Zenodo [link](https:10.5281/zenodo.23036097) 
+8. **Druggability score (hypothesis E) is heavily zero-inflated and not
+   fully independent of crypticity_index.** `druggability_apo_min_v` /
+   `druggability_holo_max_v` are fpocket's own score for the specific
+   matched pocket at a site, not necessarily a structure's single
+   top-ranked pocket, so most sites — cryptic or not — score near 0
+   (dataset median 0.001). The CI≥5 vs. CI<2 comparison is real
+   (p=4.2×10⁻⁴, mean 0.015 vs. 0.036) but is population-level evidence
+   that the phenomenon exists, not a usable per-site predictor. It's also
+   not fully independent of Hypothesis A/crypticity_index itself, since
+   fpocket's druggability score is partly a function of the same pocket
+   volume.

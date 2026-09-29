@@ -101,8 +101,18 @@ def cluster_pockets(pockets: list[dict], centroid_max_A: float, jaccard_min: flo
 
 def main():
     cfg = load_config()
-    pockets_path = f"{cfg['paths']['pockets']}/fpocket_features.csv"
-    idx_path = f"{cfg['paths']['structures']}/index.csv"
+    # Prefer the redundancy-reduced input (04b_deduplicate_structures.py) when
+    # it exists — collapses repeat depositions of the same protein+ligand
+    # complex to one representative, avoiding pseudo-replicated pocket sites.
+    # Falls back to the raw fpocket output if 04b hasn't been run yet.
+    deduped_pockets = Path(cfg["paths"]["pockets"]) / "fpocket_features_deduped.csv"
+    deduped_idx = Path(cfg["paths"]["structures"]) / "index_deduped.csv"
+    if deduped_pockets.exists() and deduped_idx.exists():
+        pockets_path, idx_path = str(deduped_pockets), str(deduped_idx)
+        print(f"[using deduplicated input from 04b_deduplicate_structures.py]")
+    else:
+        pockets_path = f"{cfg['paths']['pockets']}/fpocket_features.csv"
+        idx_path = f"{cfg['paths']['structures']}/index.csv"
     try:
         pockets = pd.read_csv(pockets_path)
         idx = pd.read_csv(idx_path)

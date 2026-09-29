@@ -110,3 +110,7 @@ External tools used (already present on this machine, per `common.py`):
    CA1 entries in the smoke test. Fixable by writing cleaned structures out
    as mmCIF instead of PDB if this starts discarding too much data on a
    broader run.
+
+## Data to be downloaded into /data folder 
+
+Use the fowllowing Zenodo [link](https:10.5281/zenodo.23036097) 

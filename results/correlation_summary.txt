@@ -1,0 +1,21 @@
+--- A) Ligand presence vs. apo structural variability ---
+n(ligand-bound sites)=8983, n(apo-only sites)=9585
+Mann-Whitney U (H1: apo volume range is larger for sites that go on to bind a ligand): U=50535599.5, p=0.0000 (SUPPORTS the hypothesis)
+median apo_volume_range: ligand-bound=175.4 A^3, apo-only=119.6 A^3
+
+Logistic regression: has_ligand ~ apo_volume_range
+                     Coef.  Std.Err.  ...    [0.025    0.975]
+const            -0.271030  0.020077  ... -0.310380 -0.231680
+apo_volume_range  0.000941  0.000063  ...  0.000817  0.001066
+
+[2 rows x 6 columns]
+
+--- B) Ligand size vs. crypticity_index ---
+crypticity_index vs heavy-atom count: n=18962, Spearman rho=0.089, p=0.0000 (SUPPORTS)
+crypticity_index vs molecular weight: n=18962, Spearman rho=0.084, p=0.0000 (SUPPORTS)
+
+--- C) Chemical diversity of bound ligands vs. crypticity_index ---
+crypticity_index vs n_distinct_scaffolds: n=18969, Spearman rho=0.456, p=0.0000 (SUPPORTS)
+
+--- D) Binding affinity vs. crypticity_index ---
+NOT COMPUTED — no experimental affinity source wired up (see docstring).

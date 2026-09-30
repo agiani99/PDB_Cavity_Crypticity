@@ -1,0 +1,12 @@
+--- E1) Apo-state druggability score vs. crypticity_index (pooled) ---
+n=18969, Spearman rho=-0.097, p=9.436e-41 (SUPPORTS the 'detector underrates cryptic sites' hypothesis)
+(median apo druggability score across all sites: 0.0010 — heavily zero-inflated: most matched sites are minor surface pockets, not the single top-ranked pocket in their structure)
+
+--- E2) Apo druggability: highly cryptic (CI>=5) vs. minimally cryptic (CI<2) ---
+n(highly cryptic)=764, n(minimally cryptic)=12645
+median: highly cryptic=0.0010, minimally cryptic=0.0010
+mean:   highly cryptic=0.0151, minimally cryptic=0.0357
+Mann-Whitney U (H1: minimally-cryptic sites score higher): U=5166154.0, p=4.218e-04 (SUPPORTS)
+
+--- E3) crypticity_index vs. delta-druggability (holo_max - apo_min) ---
+n=18969, Spearman rho=0.346, p<1e-300 (NOTE: not independent evidence — fpocket's own druggability score is partly volume-derived, so this is closer to an internal-consistency check than a new finding)

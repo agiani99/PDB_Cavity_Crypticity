@@ -1,0 +1,17 @@
+======================================================================
+CryptoBench positive-control validation
+======================================================================
+
+CryptoBench: 1107 apo PDB entries, 5493 cryptic-site records, 1110 distinct UniProt accessions.
+
+--- Level 1: protein-level ---
+146 / 369 proteins in our dataset are independently confirmed by CryptoBench to have a cryptic site.
+Per-protein max crypticity_index: CryptoBench-confirmed (n=146) median=5.998, mean=6.966 | not independently confirmed (n=223) median=5.146, mean=6.070
+Mann-Whitney U (H1: confirmed > unconfirmed): p=1.278e-03 (SUPPORTS — crypticity_index runs higher for proteins with an independently literature-confirmed cryptic site)
+
+--- Level 2: site-level (exact apo-structure residue matching) ---
+1107 CryptoBench apo entries checked against our apo structures; 3540 of our apo observations are an exact CryptoBench apo entry; 115 distinct pocket_site_id's matched a CryptoBench-annotated cryptic pocket at Jaccard >= 0.2.
+
+Crypticity index at CryptoBench-confirmed sites (n=62): median=2.279, mean=2.931
+Crypticity index at all other scored sites (n=18907): median=1.541, mean=1.959
+Mann-Whitney U (H1: confirmed sites score higher): p=4.069e-06 (SUPPORTS)

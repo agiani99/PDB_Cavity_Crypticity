@@ -1,0 +1,29 @@
+Families with >= 50 scored sites: 99
+
+Kruskal-Wallis, crypticity_index across all 99 families: H=906.3, p=4.444e-131 (crypticity varies significantly by family)
+
+Top 10 families by n_sites (most statistically robust):
+                                                                                    protein_family  n_sites  median_crypticity
+                                                        Belongs to the beta-2-microglobulin family      877           1.511077
+                                                      Belongs to the aldehyde dehydrogenase family      476           1.385176
+Belongs to the protein kinase superfamily. CMGC Ser/Thr protein kinase family. CDC2/CDKX subfamily      398           1.576648
+                                                                Belongs to the peptidase S1 family      397           1.702622
+                                                                       Belongs to the Bcl-2 family      331           1.452685
+                                                             Belongs to the pyruvate kinase family      315           1.519669
+                                     Belongs to the nuclear hormone receptor family. NR1 subfamily      313           1.817400
+                                                       Belongs to the DNA polymerase type-X family      313           1.704296
+                                                                      Belongs to the 14-3-3 family      312           1.918510
+                                                                    Belongs to the ferritin family      283           1.336437
+
+Top 10 families by diversity_rho (strongest within-family crypticity-vs-diversity signal, of 99 testable families):
+                                                                         protein_family  n_sites  diversity_rho  diversity_p
+     Belongs to the protein-tyrosine phosphatase family. Non-receptor class 1 subfamily      111       0.777009 1.199565e-23
+                                                        Belongs to the ARTD/PARP family      155       0.714924 1.500485e-25
+                          Belongs to the nuclear hormone receptor family. NR3 subfamily       90       0.710174 4.574001e-15
+Belongs to the protein kinase superfamily. Ser/Thr protein kinase family. CK2 subfamily      156       0.694967 7.992859e-24
+                                              Belongs to the ADP-ribosyl cyclase family       61       0.683400 1.287641e-09
+                                             Belongs to the integrin alpha chain family       51       0.668956 8.060319e-08
+                                               Belongs to the WD repeat WDR5/wds family      143       0.668290 7.612984e-20
+                              Belongs to the glutaminyl-peptide cyclotransferase family      142       0.654281 1.051108e-18
+                                            Belongs to the DNA polymerase type-X family      313       0.650492 4.859573e-39
+                                                     Belongs to the peptidase S1 family      397       0.637461 1.171429e-46

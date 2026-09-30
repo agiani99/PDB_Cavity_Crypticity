@@ -1,0 +1,4 @@
+3654 / 18969 pocket sites have a real ChEMBL affinity value (PCHEMBL_VALUE, median across 34783.0 total assay rows) for their max-volume-holo ligand.
+
+D) crypticity_index vs. ligand potency (PCHEMBL_VALUE, higher = more potent):
+   n=3654, Spearman rho=-0.031, p=0.0602 (does not support (not significant))

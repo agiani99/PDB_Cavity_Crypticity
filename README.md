@@ -50,6 +50,12 @@ Pipeline stages (run in order from `scripts/`):
 14_druggability_analysis.py    Hypothesis E: fpocket's own apo-state
                                  druggability score (already computed in 06,
                                  never analyzed) vs. crypticity_index
+15_validate_against_cryptobench.py  Positive-control validation against
+                                 CryptoBench (external, literature-curated
+                                 cryptic-site benchmark) — protein-level and
+                                 exact-site-level. Needs
+                                 data/external/cryptobench_dataset.json
+                                 (download from https://osf.io/pz4a9/)
 ```
 
 ## Setup
@@ -116,9 +122,11 @@ External tools used (already present on this machine, per `common.py`):
    promiscuous pocket" from "heavily studied protein."
 5. **fpocket cavity detection is somewhat parameter-sensitive** — its default
    alpha-sphere clustering can merge or split what a human would call one
-   pocket. Cross-validating against a second, independent pocket detector
-   (DoGSite3 was tried and dropped — see below) would help sanity-check the
-   crypticity calls, but nothing is currently wired up for this.
+   pocket. Cross-validating against a second, independent *pocket-detection*
+   method (DoGSite3 was tried and dropped — see below) would still help
+   sanity-check individual volume numbers, but see item 9 below: an
+   independent *ground-truth* check (not just a second detector) has now
+   been done via CryptoBench and supports the metric overall.
 6. **Entries only available as mmCIF with multi-letter chain IDs (e.g. "AAA")
    are skipped** in `03_download_and_clean.py` — legacy PDB format caps chain
    IDs at 1 character, so `PDBIO.save` throws. A minority of entries across
@@ -153,7 +161,18 @@ External tools used (already present on this machine, per `common.py`):
    not fully independent of Hypothesis A/crypticity_index itself, since
    fpocket's druggability score is partly a function of the same pocket
    volume.
-
-## Data to be downloaded into /data folder
-
-Use the fowllowing Zenodo [link](https://doi.org/10.5281/zenodo.23037984)
+9. **External validation (`15_validate_against_cryptobench.py`) supports
+   crypticity_index, with partial coverage.** Against CryptoBench (an
+   independently curated cryptic-site benchmark, not affiliated with this
+   pipeline): 146/369 of our proteins are independently confirmed to have a
+   cryptic site, and their per-protein max crypticity_index is significantly
+   higher than the rest (p=1.3×10⁻³). More stringently, exact residue-level
+   matching at the 97 apo PDB entries we share with CryptoBench identified
+   62 of our `pocket_site_id`s as literature-confirmed cryptic sites, which
+   score significantly higher (median CI=2.28) than the other 18,907 scored
+   sites (median CI=1.54, p=4.1×10⁻⁶). This only covers ~40% of our proteins
+   and ~2% of our apo observations, though — most of the dataset still has
+   no independent ground truth, and note that CryptoBench's `data/ligands`-
+   style repos (e.g. the original CryptoSite tool repo) are *not* the same
+   thing as a benchmark PDB list; that distinction cost some time to work
+   out (see the script's docstring).

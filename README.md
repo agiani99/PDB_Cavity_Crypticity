@@ -176,3 +176,6 @@ External tools used (already present on this machine, per `common.py`):
    style repos (e.g. the original CryptoSite tool repo) are *not* the same
    thing as a benchmark PDB list; that distinction cost some time to work
    out (see the script's docstring).
+
+   ## Data to be downloaded into /data folder
+    Use the fowllowing Zenodo [link](https://doi.org/10.5281/zenodo.23037984)

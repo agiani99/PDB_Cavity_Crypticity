@@ -198,3 +198,6 @@ External tools used (already present on this machine, per `common.py`):
     configuration search. Report this as a genuine negative result, not
     evidence against crypticity_index — CryptoBench's independent
     experimental ground truth (item 9) does corroborate it.
+
+    ## Data to be downloaded into /data folder
+    Use the fowllowing Zenodo [link](https://doi.org/10.5281/zenodo.23037984)

@@ -56,6 +56,10 @@ Pipeline stages (run in order from `scripts/`):
                                  exact-site-level. Needs
                                  data/external/cryptobench_dataset.json
                                  (download from https://osf.io/pz4a9/)
+16_validate_against_lacuna.py  Second, independent validation against Lacuna
+                                 (NMA-ensemble-based cryptic-pocket detector,
+                                 pip install lacuna-pockets) — a negative
+                                 result (no correlation); see item 10 below
 ```
 
 ## Setup
@@ -176,6 +180,21 @@ External tools used (already present on this machine, per `common.py`):
    style repos (e.g. the original CryptoSite tool repo) are *not* the same
    thing as a benchmark PDB list; that distinction cost some time to work
    out (see the script's docstring).
-
-   ## Data to be downloaded into /data folder
-    Use the fowllowing Zenodo [link](https://doi.org/10.5281/zenodo.23037984)
+10. **Second external validation (`16_validate_against_lacuna.py`) is a
+    negative result.** Lacuna (a single-structure, NMA-ensemble-based
+    cryptic-pocket detector — methodologically orthogonal to both our
+    pipeline and CryptoBench) shows no correlation with crypticity_index:
+    rho=0.009, p=0.75 (n=1,327 matched sites), still null (rho=0.000,
+    p=0.995) even restricted to the 638 sites where Lacuna analyzed the
+    *exact same structure* that defines our V_apo_min (ruling out a
+    reference-structure-mismatch confound). Likely explanation: Lacuna's
+    default NMA backend generates harmonic, global-motion conformers,
+    which may not capture the local, non-harmonic induced-fit motions that
+    drive a lot of real cryptic-pocket opening — consistent with Lacuna's
+    own companion paper finding that different detectors/rankers disagree
+    substantially with each other on CryptoBench. Only Lacuna's
+    zero-dependency default config was tested (not `surface-fusion`,
+    MD/Boltz-2 backends, or the PLM ranker), to avoid a post-hoc
+    configuration search. Report this as a genuine negative result, not
+    evidence against crypticity_index — CryptoBench's independent
+    experimental ground truth (item 9) does corroborate it.

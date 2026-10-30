@@ -1,7 +1,7 @@
 # Cryptic Pocket Prediction Pipeline
 
 <p align="center">
-  <img src="docs/toc_graphic.png" alt="Graphical abstract: an apo pocket opens upon ligand binding; crypticity index CI = V_holo / V_apo across 18,969 pocket sites in 369 human proteins; median CI is higher at CryptoBench-confirmed cryptic sites (2.28 vs 1.54, p = 4e-6)" width="520">
+  <img src="https://github.com/agiani99/PDB_Cavity_Crypticity/blob/main/toc_graphic.png" alt="Graphical abstract: an apo pocket opens upon ligand binding; crypticity index CI = V_holo / V_apo across 18,969 pocket sites in 369 human proteins; median CI is higher at CryptoBench-confirmed cryptic sites (2.28 vs 1.54, p = 4e-6)" width="520">
 </p>
 
 Tests the hypothesis: structural variability across independently solved

@@ -220,7 +220,7 @@ External tools used (already present on this machine, per `common.py`):
     entries, 254 (34%) get an efficacy label (231 from PDB titles/keywords,
     23 from ChEMBL mechanisms; title and ChEMBL agree on only 6 of the 8
     entries having both), and only ER-alpha, PPAR-gamma and ROR-gamma have
-    >=3 agonist and >=3 antagonist/inverse-agonist structures at the same
+    ´>=3´ agonist and >=3 antagonist/inverse-agonist structures at the same
     site (87 sites). Agonist- vs antagonist-bound pockets do not differ in
     volume (median difference +0.3 A^3, Wilcoxon p=0.80), in plasticity
     (relative MAD, equal-sample-size resampling, p=0.43, direction opposite

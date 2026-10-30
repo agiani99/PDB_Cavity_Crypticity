@@ -1,11 +1,18 @@
 # Cryptic Pocket Prediction Pipeline
 
+<p align="center">
+  <img src="docs/toc_graphic.png" alt="Graphical abstract: an apo pocket opens upon ligand binding; crypticity index CI = V_holo / V_apo across 18,969 pocket sites in 369 human proteins; median CI is higher at CryptoBench-confirmed cryptic sites (2.28 vs 1.54, p = 4e-6)" width="520">
+</p>
+
 Tests the hypothesis: structural variability across independently solved
 crystal structures of the same human protein predicts cryptic-pocket
 formation, and that crypticity in turn predicts ligand presence, size,
 chemical diversity, and affinity — plus (hypothesis E) that a standard
 pocket detector's own apo-state druggability score underrates sites that
-later turn out to be cryptic, the premise that motivated this whole project.
+later turn out to be cryptic, the premise that motivated this whole project,
+and (hypothesis F) that in nuclear hormone receptors the pocket of
+agonist-bound structures is more stable than that of antagonist-bound ones
+(not supported; see below).
 
     apo (small pocket) --------> holo (large pocket, ligand bound)
     V_apo                        V_liganded
@@ -60,6 +67,13 @@ Pipeline stages (run in order from `scripts/`):
                                  (NMA-ensemble-based cryptic-pocket detector,
                                  pip install lacuna-pockets) — a negative
                                  result (no correlation); see item 10 below
+17_nhr_agonist_antagonist.py   Hypothesis F: nuclear hormone receptors, agonist-
+                                 vs antagonist-bound pocket volume / plasticity /
+                                 crypticity at matched sites. Efficacy labels from
+                                 PDB titles + ChEMBL mechanisms (cached in
+                                 data/external/nhr_entry_labels.csv; needs network
+                                 only on first run or with --refresh). Writes
+                                 fig8_nhr_agonist_antagonist.png; see item 11
 ```
 
 ## Setup
@@ -198,6 +212,25 @@ External tools used (already present on this machine, per `common.py`):
     configuration search. Report this as a genuine negative result, not
     evidence against crypticity_index — CryptoBench's independent
     experimental ground truth (item 9) does corroborate it.
-
-    ## Data to be downloaded into /data folder
-    Use the fowllowing Zenodo [link](https://doi.org/10.5281/zenodo.23037984)
+11. **Agonist vs. antagonist plasticity (hypothesis F,
+    `17_nhr_agonist_antagonist.py`) is not supported, and can only be
+    tested for 3 receptors.** Only nuclear hormone receptors are testable:
+    this dataset (X-ray, <=2.5 A, apo + holo required) contains no
+    GPCRs, no ion channels and only 2 transporter proteins. Of 756 NHR holo
+    entries, 254 (34%) get an efficacy label (231 from PDB titles/keywords,
+    23 from ChEMBL mechanisms; title and ChEMBL agree on only 6 of the 8
+    entries having both), and only ER-alpha, PPAR-gamma and ROR-gamma have
+    >=3 agonist and >=3 antagonist/inverse-agonist structures at the same
+    site (87 sites). Agonist- vs antagonist-bound pockets do not differ in
+    volume (median difference +0.3 A^3, Wilcoxon p=0.80), in plasticity
+    (relative MAD, equal-sample-size resampling, p=0.43, direction opposite
+    to the expectation) or in crypticity (p=0.72); a mixed model gives a
+    marginal +4% larger volume for antagonist-like ligands (p=0.05-0.06),
+    not explained by ligand size. Only ER-alpha trends the textbook way
+    (antagonist-bound pocket 457 vs 393 A^3, p=0.11), and no protein is
+    significant on its own. Caveats: labels are text-mined, not
+    pharmacology; fpocket volume is a crude proxy for the helix-12
+    rearrangement that defines agonism/antagonism; one volume per
+    (entry, site) is used, but sites within a protein are not independent;
+    partial agonists (PPAR-gamma only) are kept separate, and pooling them
+    with agonists changes nothing.

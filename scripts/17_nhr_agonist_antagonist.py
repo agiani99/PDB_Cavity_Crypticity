@@ -31,7 +31,7 @@ labels are cached in data/external/nhr_entry_labels.csv (use --refresh to rebuil
 Output: results/nhr_agonist_antagonist_summary.txt
         results/nhr_site_comparison.csv
         results/nhr_entry_labels.csv
-        results/figures/fig8_nhr_agonist_antagonist.png
+        results/figures/fig9_nhr_agonist_antagonist.png
 """
 import argparse
 import re
@@ -334,7 +334,7 @@ def main():
             pos += 1
         ax[0].set_xticks(ticks); ax[0].set_xticklabels(labs)
         ax[0].set_ylabel("pocket volume (Å$^3$)")
-        ax[0].set_title("Most populated site per protein", fontsize=9, fontweight="bold")
+       
         for x, nme in (("A", "agonist"), ("P", "partial"), ("N", "antagonist-like")):
             ax[0].bar(0, 0, color=col[x], alpha=0.6, label=nme)
         ax[0].legend(frameon=False, fontsize=7)
@@ -342,14 +342,19 @@ def main():
         for u, g in sites.groupby("uniprot"):
             ax[1].scatter(g["median_vol_agonist"], g["median_vol_antagonist"], s=14, color=pc[u], alpha=0.8, label=NAMES.get(u, u))
             ax[2].scatter(g["rel_mad_agonist_eq"], g["rel_mad_antagonist_eq"], s=14, color=pc[u], alpha=0.8)
-        for a_, ttl, xl, yl in ((ax[1], "Median volume per site", "agonist-bound (Å$^3$)", "antagonist-like (Å$^3$)"),
-                                (ax[2], "Plasticity per site (relative MAD)", "agonist-bound", "antagonist-like")):
-            lo = min(a_.get_xlim()[0], a_.get_ylim()[0]); hi = max(a_.get_xlim()[1], a_.get_ylim()[1])
-            a_.plot([lo, hi], [lo, hi], color="grey", lw=0.8, ls="--"); a_.set_xlim(lo, hi); a_.set_ylim(lo, hi)
-            a_.set_title(ttl, fontsize=9, fontweight="bold"); a_.set_xlabel(xl); a_.set_ylabel(yl)
+        for a_, xl, yl in (
+            (ax[1], "Median volume, agonist-bound (Å$^3$)", "Median volume, antagonist-like-bound (Å$^3$)"),
+            (ax[2], "Plasticity, agonist-bound", "Plasticity, antagonist-like-bound")):
+            lo = min(a_.get_xlim()[0], a_.get_ylim()[0])
+            hi = max(a_.get_xlim()[1], a_.get_ylim()[1])
+            a_.plot([lo, hi], [lo, hi], color="grey", lw=0.8, ls="--")
+            a_.set_xlim(lo, hi)
+            a_.set_ylim(lo, hi)
+            a_.set_xlabel(xl)
+            a_.set_ylabel(yl)
         ax[1].legend(frameon=False, fontsize=7)
         fig.tight_layout()
-        out = res / "figures" / "fig8_nhr_agonist_antagonist.png"
+        out = res / "figures" / "fig9_nhr_agonist_antagonist.png"
         fig.savefig(out, dpi=300, bbox_inches="tight")
         print(f"\nWrote {out}")
 
